@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id = "dtm_calidad_accion" model="ir.actions.act_window">
+            <field name="name">Calidad</field>
+            <field name="res_model">dtm.calidad</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+
+        <record id="dtm_calidad_tree" model="ir.ui.view">
+            <field name="name">dtm_calidad_tree</field>
+            <field name="model">dtm.calidad</field>
+            <field name="arch" type="xml">
+                <tree>
+<!--                    <field name="sequence" widget="handle"></field>-->
+                    <field name="ot_number"/>
+                    <field name="tipe_order"/>
+                    <field name="date_rel" widget="date"/>
+                    <field name="name_client"/>
+                    <field name="product_name"/>
+<!--                    <field name="status" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
+                    <field name="status" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="dtm_calidad_kanban" model="ir.ui.view">
+            <field name="name">dtm_calidad_kanban</field>
+            <field name="model">dtm.calidad</field>
+            <field name="arch" type="xml">
+
+                <kanban default_group_by = "status">
+
+                     <template>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click" >
+                                <div class="oe_kanban_details flex-container">
+                                        <strong class="o_kanban_record_title display-row"  >
+                                            <field name="tipe_order" />
+
+                                            <field name="name_client" />
+
+                                            <field name="ot_number" />
+                                        </strong>
+                                    <div class="o_kanban_tags_section flex-container"  >
+                                        <ul>
+                                            <li>
+                                                <field name="firma_diseno"/>
+                                            </li>
+                                            <li class="display-row">
+                                                <field name="firma_ventas" />
+                                                <field name="firma_compras" />
+                                                <field name="firma_almacen" />
+                                                <field name="firma_proceso" />
+                                            </li>
+                                            <li>
+                                                <field name="product_name"/>
+                                            </li>
+                                            <li>
+                                                Entrada: <field name="date_in"/>
+                                            </li>
+                                             <li>
+                                                Entrega <field name="date_rel"  widget="remaining_days"/>
+                                            </li>
+                                            <li>
+                                                Notas <field name="notes"/>
+                                            </li>
+                                        </ul>
+
+                                    </div >
+                                    <div class="card-footer" >
+                                        <strong class="o_kanban_record_title">
+                                            <field name="description"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <style>
+                                .flex-container{
+                                    display: flex;
+                                    flex-direction: column;
+                                }
+                                .display-row{
+                                    display: flex;
+                                    justify-content: space-between;
+                                }
+                            </style>
+                        </t>
+                    </template>
+
+                </kanban>
+            </field>
+        </record>
+
+        <record id="dtm_calidad_form" model="ir.ui.view">
+            <field name="name">dtm_calidad_form</field>
+            <field name="model">dtm.calidad</field>
+            <field name="arch" type="xml">
+                <form string="formulario">
+                    <header>
+<!--                        <button type="object" name="action_imprimir_formato" string="ODT" attrs="{'invisible': [('tipe_order', '=', '')]}" icon="fa-print" class="btn btn-primary"/>-->
+<!--                        <button type="object" name="action_imprimir_materiales" string="Lista de Materiales" attrs="{'invisible': [('tipe_order', '=', '')]}" icon="fa-print" class="btn btn-primary"/>-->
+                        <button type="object" name="action_firma" string="Firma"  icon="fa-pencil" class="btn btn-primary"/>
+                    </header>
+
+                    <sheet>
+
+                            <h1 > ORDEN DE TRABAJO </h1>
+
+
+                            <h2> Diseño y Transformaciones Metálicas S. de R.L. de C.V.</h2>
+
+                        <group >
+
+                            <field name="status"/>
+
+                        </group>
+                        <group >
+                            <group>
+                                <field name="tipe_order"/>
+                                <field name="name_client" attrs="{'required': [('tipe_order', '!=', '')]}"/>
+                                <field name="firma_diseno"/>
+                            </group>
+                            <group>
+                                <field name="product_name" attrs="{'required': [('tipe_order', '!=', '')]}"/>
+                                <field name="ot_number"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="po_number" attrs="{'invisible': [('tipe_order', '=', 'npi')]}"/>
+                                <field name="date_in" />
+                                <field name="date_rel"/>
+                                 <field name="nesteos" widget="boolean_toggle" />
+                            </group>
+                             <group>
+                                <field name="version_ot" attrs="{'invisible': [('tipe_order', '=', 'npi')]}"/>
+                                <field name="cuantity" options='{"type": "number"}'/>
+                                <field name="color" attrs="{'invisible': [('tipe_order', '=', 'npi')]}"/>
+                                <field name="planos" widget="boolean_toggle" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="firma_ventas"/>
+                            <field name="firma_compras"/>
+                        </group>
+
+                        <notebook>
+                            <page  string="RESUMEN">
+                                <group>
+                                    <field name="description"/>
+                                </group>
+                            </page>
+
+                            <page string="MATERIALES" >
+                                <field name="materials_ids" >
+                                    <tree editable="bottom">
+                                        <field name="nombre"/>
+                                        <field name="medida"/>
+                                        <field name="materials_cuantity"/>
+                                        <field name="materials_inventory"/>
+                                        <field name="materials_required"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="RECHAZO">
+                                <field name="rechazo_id">
+                                    <tree editable="bottom">
+                                        <field name="decripcion"/>
+                                        <field name="fecha"/>
+                                        <field name="hora"/>
+                                        <field name="firma"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="PLANOS">
+                                <field name="anexos_id" >
+                                     <tree>
+                                            <field name="nombre" invisible="0"></field>
+                                     </tree>
+                                     <form>
+                                        <group >
+                                            <field name="documentos" filename="nombre" widget="pdf_viewer"></field>
+                                            <field name="nombre" invisible="1"></field>
+                                        </group>
+                                     </form>
+                                </field>
+                            </page>
+                            <page string="Primera Pieza">
+                                <field name="primera_pieza_id">
+                                  <tree>
+                                            <field name="nombre" invisible="0"></field>
+                                            <field name="cortado" />
+                                     </tree>
+                                     <form>
+                                        <group >
+                                            <field name="documentos" filename="nombre" widget="pdf_viewer"></field>
+                                            <field name="nombre" invisible="1"></field>
+                                        </group>
+                                     </form>
+                                </field>
+                            </page>
+
+                            <page string="MITSUBISHI">
+                                <field name="cortadora_id" >
+                                     <tree>
+                                            <field name="nombre" invisible="0"></field>
+                                            <field name="cortado" />
+                                     </tree>
+                                     <form>
+                                        <group >
+                                            <field name="documentos" filename="nombre" widget="pdf_viewer"></field>
+                                            <field name="nombre" invisible="1"></field>
+                                        </group>
+                                     </form>
+                                </field>
+                            </page>
+                             <page string="LTP 6032">
+                                <field name="tubos_id" >
+                                     <tree>
+                                            <field name="nombre" invisible="0"></field>
+                                     </tree>
+                                     <form>
+                                        <group >
+                                            <field name="documentos" filename="nombre"  widget="pdf_viewer"></field>
+                                            <field name="nombre" invisible="1"></field>
+                                        </group>
+                                     </form>
+                                </field>
+                            </page>
+
+                            <page string="NOTAS">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id = "dtm_calidad_search" model="ir.ui.view">
+               <field name="name">dtm.calidad.search</field>
+               <field name="model">dtm.calidad</field>
+               <field name ="arch" type="xml">
+                   <search>
+                        <filter string="OT" name="calidad_ot" domain="[('tipe_order','=','OT')]"/>
+                        <filter string="NPI" name="calidad_npi" domain="[('tipe_order','=','NPI')]"/>
+                        <separator/>
+                        <filter string="Corte" name="calidad_terminado" domain="[('status','=','corte')]"/>
+                        <filter string="Doblado" name="calidad_ot" domain="[('status','=','doblado')]"/>
+                        <filter string="Soldadura" name="calidad_npi" domain="[('status','=','soldadura')]"/>
+                        <filter string="Lavado" name="calidad_terminado" domain="[('status','=','lavado')]"/>
+                        <filter string="Pintura" name="calidad_ot" domain="[('status','=','pintura')]"/>
+                        <filter string="Ensamble" name="calidad_npi" domain="[('status','=','ensamble')]"/>
+                        <filter string="Terminado" name="calidad_terminado" domain="[('status','=','terminado')]"/>
+                        <separator/>
+                        <filter string="No Corte" name="calidad_terminado_quitar" domain="[('status','!=','corte')]"/>
+                        <filter string="No Doblado" name="calidad_ot_quitar" domain="[('status','!=','doblado')]"/>
+                        <filter string="No Soldadura" name="calidad_npi_quitar" domain="[('status','!=','soldadura')]"/>
+                        <filter string="No Lavado" name="calidad_terminado_quitar" domain="[('status','!=','lavado')]"/>
+                        <filter string="No Pintura" name="calidad_ot_quitar" domain="[('status','!=','pintura')]"/>
+                        <filter string="No Ensamble" name="calidad_npi_quitar" domain="[('status','!=','ensamble')]"/>
+                        <filter string="No Terminado" name="calidad_terminado_quitar" domain="[('status','!=','terminado')]"/>
+                   </search>
+
+
+               </field>
+
+
+           </record>
+
+        <menuitem id="dtm_calidad"  action="dtm_calidad_accion"/>
+
+
+    </data>
+</odoo>
