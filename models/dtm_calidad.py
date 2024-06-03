@@ -48,9 +48,10 @@ class Calidad(models.Model):
         get_ot = self.env['dtm.odt'].search([("ot_number","=",self.ot_number)])
         get_ot.write({"firma_produccion": self.firma})
         get_proc = self.env['dtm.proceso'].search([("ot_number","=",self.ot_number)])
-        get_proc.write({"firma_calidad": "Calidad"})
-
-
+        get_proc.write({
+            "firma_calidad": self.firma,
+            "firma_calidad_kanba":"Calidad"
+        })
 
     def get_view(self, view_id=None, view_type='form', **options):
         res = super(Calidad,self).get_view(view_id, view_type,**options)
