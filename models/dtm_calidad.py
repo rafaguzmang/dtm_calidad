@@ -6,7 +6,15 @@ class Calidad(models.Model):
     _description = "Modelo para llevar el control de calidad"
     _order = "ot_number desc"
 
-    status = fields.Selection(string="Estatus",selection=[("corte","Corte"),("corterevision","Corte - Revisión FAI"),("revision","Revisión FAI"),("corterevision","Corte - Revisión FAI"),("cortedoblado","Corte - Doblado"),("doblado","Doblado"),("soldadura","Soldadura"),("lavado","Lavado"),("pintura","Pintura"),("ensamble","Ensamble"),("terminado","Terminado")])
+    status = fields.Selection(string="Estatus", selection=[("aprobacion","Pendiente a aprobación"),
+                                         ("corte","Corte"),("corterevision","Corte - Revisión FAI"),
+                                         ("revision","Revisión FAI"),("corterevision","Corte - Revisión FAI"),
+                                         ("cortedoblado","Corte - Doblado"),("doblado","Doblado"),
+                                         ("soldadura","Soldadura"),("lavado","Lavado"),("pintura","Pintura"),
+                                         ("ensamble","Ensamble"),("calidad","Calidad"),("instalacion","Instalación"),
+                                         ("facturado","Facturado")])
+
+
     sequence = fields.Integer()
     ot_number = fields.Char(string="NÚMERO",readonly=True)
     tipe_order = fields.Char(string="TIPO",readonly=True)
@@ -42,6 +50,26 @@ class Calidad(models.Model):
     description = fields.Text(string= "DESCRIPCIÓN",placeholder="RESUMEN DE DESCRIPCIÓN")
 
     notes = fields.Text()
+
+    pausa = fields.Boolean()
+    pausa_motivo = fields.Text()
+
+    def action_detener(self):
+        get_pro = self.env['dtm.proceso'].search([("ot_number","=",self.ot_number),("tipe_order","=",self.tipe_order)])
+        get_pro.write({
+            "pausado":"Pausado por Calidad",
+            "status_pausado": get_pro.status,
+            "pausa_motivo": self.pausa_motivo
+        })
+        self.pausa = True
+
+    def action_continuar(self):
+        get_pro = self.env['dtm.proceso'].search([("ot_number","=",self.ot_number),("tipe_order","=",self.tipe_order)])
+        get_pro.write({
+                "pausado":"",
+                "status_pausado": ""
+            })
+        self.pausa = False
 
     def action_firma(self):
         self.firma = self.env.user.partner_id.name

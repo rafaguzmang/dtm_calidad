@@ -97,10 +97,17 @@
             <field name="model">dtm.calidad</field>
             <field name="arch" type="xml">
                 <form string="formulario">
+                     <style>
+                        .o_statusbar_buttons{
+                            width: 100%;
+                            justify-content: space-around;
+                        }
+
+                    </style>
                     <header>
-<!--                        <button type="object" name="action_imprimir_formato" string="ODT" attrs="{'invisible': [('tipe_order', '=', '')]}" icon="fa-print" class="btn btn-primary"/>-->
-<!--                        <button type="object" name="action_imprimir_materiales" string="Lista de Materiales" attrs="{'invisible': [('tipe_order', '=', '')]}" icon="fa-print" class="btn btn-primary"/>-->
                         <button type="object" name="action_firma" string="Firma"  icon="fa-pencil" class="btn btn-primary"/>
+                        <button type="object" name="action_detener" string="Detener"  icon="fa-hourglass" class="btn btn-danger " attrs="{'invisible': [('pausa', '=', True)]}"/>
+                        <button type="object" name="action_continuar" string="Continuar"  icon="fa-play" class="btn btn-success " attrs="{'invisible': [('pausa', '=', False)]}"/>
                     </header>
 
                     <sheet>
@@ -111,15 +118,14 @@
                             <h2> Diseño y Transformaciones Metálicas S. de R.L. de C.V.</h2>
 
                         <group >
-
                             <field name="status"/>
-
+                            <field name="pausa" invisible="1" />
                         </group>
                         <group >
                             <group>
                                 <field name="tipe_order"/>
                                 <field name="name_client" attrs="{'required': [('tipe_order', '!=', '')]}"/>
-                                <field name="firma_diseno"/>
+                                <field name="firma"/>
                             </group>
                             <group>
                                 <field name="product_name" attrs="{'required': [('tipe_order', '!=', '')]}"/>
@@ -232,6 +238,9 @@
 
                             <page string="NOTAS">
                                 <field name="notes"/>
+                            </page>
+                            <page string="Pausado">
+                                <field name="pausa_motivo"/>
                             </page>
                         </notebook>
                     </sheet>
