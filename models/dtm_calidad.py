@@ -50,9 +50,20 @@ class Calidad(models.Model):
     description = fields.Text(string= "DESCRIPCIÓN",placeholder="RESUMEN DE DESCRIPCIÓN")
 
     notes = fields.Text()
-
+    #------------------Datos exclusivos de este modelo----------------------------
     pausa = fields.Boolean()
     pausa_motivo = fields.Text()
+    #-----------------------------------
+    pausado = fields.Char(string="Detenido por: ", readonly=True)
+    status_pausado = fields.Char()
+    pausa_motivo = fields.Text()
+
+    materials = fields.Integer(string="Material")
+    firma_parcial = fields.Boolean()
+    firma_ventas_kanba = fields.Char(string = "Ventas", readonly = True)
+    firma_compras_kanba = fields.Char(string = "Compras", readonly = True)
+    firma_almacen_kanba = fields.Char(string = "", readonly = True)
+    firma_calidad_kanba = fields.Char(string = "", readonly = True)
 
     def action_detener(self):
         get_pro = self.env['dtm.proceso'].search([("ot_number","=",self.ot_number),("tipe_order","=",self.tipe_order)])
@@ -111,7 +122,17 @@ class Calidad(models.Model):
                 "firma_compras": proceso.firma_compras,
                 "firma_diseno": proceso.firma_diseno,
                 "firma_almacen": proceso.firma_almacen,
-                "firma_ventas": proceso.firma_ventas
+                "firma_ventas": proceso.firma_ventas,
+                "description": proceso.description,
+                "pausado": proceso.pausado,
+                "status_pausado": proceso.status_pausado,
+                "pausa_motivo": proceso.pausa_motivo,
+                "materials": proceso.materials,
+                "firma_parcial": proceso.firma_parcial,
+                "firma_ventas_kanba": proceso.firma_ventas_kanba,
+                "firma_compras_kanba": proceso.firma_compras_kanba,
+                "firma_almacen_kanba": proceso.firma_almacen_kanba,
+                "firma_calidad_kanba": proceso.firma_calidad_kanba,
             }
 
 
