@@ -12,7 +12,7 @@ class Calidad(models.Model):
                                          ("cortedoblado","Corte - Doblado"),("doblado","Doblado"),
                                          ("soldadura","Soldadura"),("lavado","Lavado"),("pintura","Pintura"),
                                          ("ensamble","Ensamble"),("calidad","Calidad"),("instalacion","Instalación"),
-                                         ("facturado","Facturado")])
+                                         ("terminado","Terminado")])
 
 
     sequence = fields.Integer()
