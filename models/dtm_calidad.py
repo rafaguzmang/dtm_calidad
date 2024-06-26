@@ -3,6 +3,7 @@ from odoo import models,fields,api
 
 class Calidad(models.Model):
     _name = "dtm.calidad"
+    _inherit = ['mail.thread']
     _description = "Modelo para llevar el control de calidad"
     _order = "ot_number desc"
 

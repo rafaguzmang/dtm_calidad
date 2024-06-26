@@ -2,7 +2,7 @@
     "name":"Calidad",
 
     'version': '1.0',
-    "depends":["dtm_procesos"],
+    "depends":['base', 'mail',"dtm_procesos"],
     'author': "Rafael Guzmán",
     "description": "Modulo para el control de calidad",
     "data":[
