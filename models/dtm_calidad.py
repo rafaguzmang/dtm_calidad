@@ -1,4 +1,5 @@
 from odoo import models,fields,api
+from odoo.exceptions import ValidationError, AccessError, MissingError,Warning
 
 
 class Calidad(models.Model):
@@ -87,11 +88,16 @@ class Calidad(models.Model):
         self.firma = self.env.user.partner_id.name
         get_ot = self.env['dtm.odt'].search([("ot_number","=",self.ot_number)])
         get_ot.write({"firma_produccion": self.firma})
-        get_proc = self.env['dtm.proceso'].search([("ot_number","=",self.ot_number)])
-        get_proc.write({
-            "firma_calidad": self.firma,
-            "firma_calidad_kanba":"Calidad"
-        })
+        get_proc = self.env['dtm.proceso'].search([("ot_number","=",self.ot_number),("tipe_order","=",self.tipe_order)])
+        if get_proc.status == 'calidad' and get_proc.firma_compras_kanba and get_proc.firma_almacen_kanba and get_proc.firma_ventas_kanba:
+            print(get_proc.status,get_proc.firma_compras_kanba,get_proc.firma_almacen_kanba,get_proc.firma_ventas_kanba)
+            get_proc.write({
+                "firma_calidad": self.firma,
+                "firma_calidad_kanba":"Calidad"
+            })
+
+        else:
+            raise ValidationError("OT/NPI debe de estar en status Calidad o faltan firmas")
 
     def get_view(self, view_id=None, view_type='form', **options):
         res = super(Calidad,self).get_view(view_id, view_type,**options)
