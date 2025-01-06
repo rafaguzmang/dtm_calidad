@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+       <data>
+            <record id="dtm_calidad_rechazo_tree" model="ir.ui.view">
+                <field name="name">dtm_calidad_rechazo_tree_tree</field>
+                <field name="model">dtm.calidad.rechazo</field>
+                <field name="arch" type="xml">
+                    <tree delete="false">
+                        <field name="id"></field>
+                        <field name="date"/>
+                        <field name="job_no"></field>
+                        <field name="po_number"></field>
+                        <field name="part_no"></field>
+                        <field name="no_of_pieces_rejected"></field>
+                        <field name="reason"></field>
+                        <field name="inspector"></field>
+                    </tree>
+                </field>
+            </record>
+
+<!--            <record id = "tm_calidad_rechazo_search" model="ir.ui.view">-->
+<!--               <field name="name">dtm.calidad.rechazo.search</field>-->
+<!--               <field name="model">dtm.calidad.rechazo</field>-->
+<!--               <field name ="arch" type="xml">-->
+<!--                   <search>-->
+<!--                   </search>-->
+<!--               </field>-->
+<!--           </record>-->
+
+            <record id="dtm_calidad_rechazo_form" model="ir.ui.view">
+                <field name="name">dtm_calidad_rechazo_tree_form</field>
+                <field name="model">dtm.calidad.rechazo</field>
+                <field name="arch" type="xml">
+                        <form string="">
+                            <header>
+                            </header>
+                            <sheet>
+                                <group>
+                                    <field name="date"/>
+                                    <field name="id"></field>
+                                    <field name="job_no"></field>
+                                    <field name="po_number"></field>
+                                    <field name="part_no"></field>
+                                    <field name="no_of_pieces_rejected"></field>
+                                    <field name="reason"></field>
+                                    <field name="inspector"></field>
+
+                                </group>
+                            </sheet>
+                        </form>
+                </field>
+            </record>
+
+            <record id="dtm_calidad_rechazo_accion" model="ir.actions.act_window">
+                <field name="name">Calidad</field>
+                <field name="res_model">dtm.calidad.rechazo</field>
+                <field name="view_mode">tree,form</field>
+            </record>
+
+            <menuitem id="dtm_calidad_rechazo_menu" action="dtm_calidad_rechazo_accion"/>
+
+
+        </data>
+
+
+</odoo>
