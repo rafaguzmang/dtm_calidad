@@ -6,6 +6,7 @@ class Calidad(models.Model):
     _name = 'dtm.calidad.rechazo'
     _description = 'Registro de calidad'
 
+    consecutivo = fields.Integer(string='ID')
     job_no = fields.Char(string='JOB NO')
     po_number = fields.Char(string='P. O. NO.')
     part_no = fields.Char(string='PART NO')

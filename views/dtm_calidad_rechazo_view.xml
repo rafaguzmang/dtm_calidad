@@ -6,7 +6,7 @@
                 <field name="model">dtm.calidad.rechazo</field>
                 <field name="arch" type="xml">
                     <tree delete="false">
-                        <field name="id"></field>
+                        <field name="consecutivo"></field>
                         <field name="date"/>
                         <field name="job_no"></field>
                         <field name="po_number"></field>
@@ -37,7 +37,7 @@
                             <sheet>
                                 <group>
                                     <field name="date"/>
-                                    <field name="id"></field>
+                                    <field name="consecutivo"></field>
                                     <field name="job_no"></field>
                                     <field name="po_number"></field>
                                     <field name="part_no"></field>
