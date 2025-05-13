@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="dtm_calidad_indicadores_action" model="ir.actions.client">
+        <field name="name">Indicadores</field>
+        <field name="tag">dtm_calidad.indicadores</field>
+    </record>
+
+<!--    <menuitem id="dtm_calidad_indicadores_menu" action="dtm_calidad_indicadores_action"/>-->
+</odoo>

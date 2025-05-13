@@ -57,7 +57,11 @@
                 <field name="view_mode">tree,form</field>
             </record>
 
-            <menuitem id="dtm_calidad_rechazo_menu" action="dtm_calidad_rechazo_accion"/>
+            <menuitem name="Calidad" id="menu_root_dtm_calidad">
+                <menuitem id="dtm_calidad_rechazo_menu" action="dtm_calidad_rechazo_accion"/>
+                <menuitem id="dtm_calidad_indicadores_menu" action="dtm_calidad_indicadores_action"/>
+            </menuitem>
+
 
 
         </data>

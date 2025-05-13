@@ -13,5 +13,5 @@ class Calidad(models.Model):
     no_of_pieces_rejected = fields.Integer(string='NO. OF PIECES REJECTED')
     reason = fields.Char(string='REASON')
     inspector = fields.Char(string='INSPECTOR')
-    date = fields.Date(string='DATE',default=datetime.now())
+    date = fields.Date(string='DATE')
 
