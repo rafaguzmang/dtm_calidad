@@ -11,18 +11,20 @@ class IndicadoresCalidad(http.Controller):
 
         get_calidad = request.env['dtm.calidad.rechazo'].search([]).mapped('job_no')
         indicadores = []
+        # print(get_calidad)
         for month in range(1,13):
             if month <= int(datetime.today().strftime("%m")):
                 request.env.cr.execute(
-                    " SELECT ot_number,create_date FROM dtm_facturado_odt WHERE EXTRACT(MONTH FROM create_date) = " + str(month) +
-                    " AND EXTRACT(YEAR FROM create_date) = " + datetime.today().strftime("%Y") + ";")
+                    " SELECT ot_number,date_in FROM dtm_facturado_odt WHERE EXTRACT(MONTH FROM date_in) = " + str(month) +
+                    " AND EXTRACT(YEAR FROM date_in) = " + datetime.today().strftime("%Y") + ";")
                 get_totales = request.env.cr.fetchall()
-                ordenes = len([item[0] for item in get_totales])
-                defectos = len(list(filter(lambda x: str(x) in get_calidad, [item[0] for item in get_totales])))
-                porciento = round(((defectos * 100)/ordenes),2)
-                mes = str(get_totales[0][1].strftime("%B")).capitalize()
-                indicadores.append({'totales':ordenes,'defectos':defectos,'porciento':porciento,'mes':mes})
+                if get_totales:
+                    # print([item[0] for item in get_totales])
+                    ordenes = len([item[0] for item in get_totales])
+                    defectos = len(list(filter(lambda x: str(x) in get_calidad, [item[0] for item in get_totales])))
+                    porciento = round(((defectos * 100)/max(ordenes,1)),2)
+                    mes = str(get_totales[0][1].strftime("%B")).capitalize() if len(get_totales[0][1].strftime("%B"))>0 else datetime.today().strftime("%B").capitalize()
+                    indicadores.append({'totales':ordenes,'defectos':defectos,'porciento':porciento,'mes':mes})
 
-        result = indicadores
 
-        return result
+        return indicadores
